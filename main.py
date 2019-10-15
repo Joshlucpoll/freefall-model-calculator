@@ -14,6 +14,8 @@ https://www.grc.nasa.gov/www/k-12/airplane/falling.html
 import inputs
 from texttable import Texttable
 import webbrowser
+import matplotlib.pyplot as plt
+import numpy as np
 
 def calculate(timeInterval, acceleration, initialVelocity, dragCoefficient, mass, area):
 
@@ -87,6 +89,24 @@ def renderTable(timeList, accelerationList, velocityList, distanceList):
     
     #open file in default txt editor
     webbrowser.open("output.txt")
+
+    #removes the terminal velocity value as it's repeated
+    velocityList.pop()
+    timeList.pop()
+
+    #generates a velocity time graph
+    plt.title('Velocity-Time Graph for Free Fall')
+    plt.ylabel('Velocity (m/s)')
+    plt.xlabel('Time (seconds)')
+    plt.axis([0, timeList[-1], 0, (velocityList[-1] + 10)])
+    plt.plot(timeList, velocityList)
+    
+    #places arrow on graph to show terminal velocity and the time
+    arrowString = 'Terminal:\n' + str(velocityList[-1]) + ' m/s\n' + str(timeList[-1]) + ' seconds'
+    plt.annotate((arrowString), xy=(timeList[-1], velocityList[-1]), xytext=(timeList[-1] - 10, velocityList[-1]- 20), arrowprops=dict(facecolor='black', shrink=0.05))
+    
+    #displays the graph
+    plt.show()
 
 
 
